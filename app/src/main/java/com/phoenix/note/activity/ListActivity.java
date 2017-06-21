@@ -1,10 +1,12 @@
-package com.xhinliang.dnote.activity;
+package com.phoenix.note.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,9 +23,9 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
-import com.xhinliang.dnote.R;
-import com.xhinliang.dnote.adpter.NoteAdapter;
-import com.xhinliang.dnote.global.NoteFactory;
+import com.phoenix.note.R;
+import com.phoenix.note.adpter.NoteAdapter;
+import com.phoenix.note.global.NoteFactory;
 
 import java.util.List;
 
@@ -86,6 +88,33 @@ public class ListActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_FOR_EDIT_NOTE);
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            // new AlertDialog.Builder    a=new AlertDialog.Builder (ListActivity.this);
+            new AlertDialog.Builder(ListActivity.this).setTitle("提示")//设置对话框标题
+                    .setMessage("是否删除?")//设置显示的内容
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                            noteFactory.getNotes().get(position).delete();
+                            noteFactory.getNotes().remove(position);
+
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加返回按钮
+                @Override
+                public void onClick(DialogInterface dialog, int which) {//响应事件
+
+                }
+            }).show();//在按键响应事件中显示此对话框
+            return true;
+        }
+
+    });
 
         // 浮动按钮执行的逻辑
         fab.setOnClickListener(new View.OnClickListener() {

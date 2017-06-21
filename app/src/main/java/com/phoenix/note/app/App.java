@@ -1,4 +1,4 @@
-package com.xhinliang.dnote.app;
+package com.phoenix.note.app;
 
 import android.app.Application;
 

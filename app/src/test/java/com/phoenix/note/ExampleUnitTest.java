@@ -1,4 +1,4 @@
-package com.xhinliang.dnote;
+package com.phoenix.note;
 
 import org.junit.Test;
 
